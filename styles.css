@@ -27,11 +27,10 @@ body {
 
 #keypad {
     flex: 4;
-}
-    /* display: flex;
+    display: flex;
     flex-direction: column;
 }
 
 .row {
     flex: 1;
-} */
+}
