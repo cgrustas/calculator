@@ -13,7 +13,12 @@ function displayDigitsOnClick() {
     digits.forEach(digit => {
         digit.addEventListener("click", () => {
             display.textContent += digit.textContent;
-            operand1 = display.textContent;
+            if (!operator) {
+                operand1 = display.textContent;
+            }
+            else {
+                operand2 = display.textContent;
+            }
         });
     });
 }
@@ -35,10 +40,17 @@ function displayDigitsOnClick() {
 // function handleOperatorClick() {
 //     const operators = document.querySelectorAll(".operator");
 //     const display = document.querySelector("#display #content")
-//     operators.forEach(operator => {
-//         operator.addEventListener("click", () => {
+//     operators.forEach(operButton => {
+//         operButton.addEventListener("click", () => {
+//             // if you click on an operator before any numbers are in the display, don't do anything
 //             if (!operand1) {
-
+//                 return;
+//             }
+//             else {
+//                 if (!operand2) {
+//                     display.textContent = "";
+//                     operator = operator.textContent;
+//                 }
 //             }
 
 
