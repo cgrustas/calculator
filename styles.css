@@ -48,4 +48,5 @@ body {
 
 .key {
     flex: 1;
+    border-radius: 50%;
 }
