@@ -2,6 +2,22 @@ let operand1;
 let operand2;
 let operator;
 
+displayDigitsOnClick();
+
+// EFFECT: populates display when digit buttons are clicked
+// TODO: stores display number in variable 
+function displayDigitsOnClick() {
+    const digits = document.querySelectorAll(".number");
+    const display = document.querySelector("#content");
+    console.log(display);
+    digits.forEach(digit => {
+        digit.addEventListener("click", () => {
+            // TODO: these should be strings
+            display.textContent += digit.textContent;
+        });
+    });
+}
+
 // takes an operator and two numbers
 // returns the result of x [+, -, *, /] y
 function operate(x, operator, y) {
