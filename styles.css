@@ -22,9 +22,16 @@ body {
 
 #display {
     background-color: rgb(119, 119, 58);
-    flex: 1;
+    flex: 2;
 }
 
 #keypad {
     flex: 4;
 }
+    /* display: flex;
+    flex-direction: column;
+}
+
+.row {
+    flex: 1;
+} */
