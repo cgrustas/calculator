@@ -17,3 +17,12 @@ body {
     /* display: flex;
     flex-direction: column; */
 }
+
+#display {
+    background-color: rgb(119, 119, 58);
+    /* flex: 1; */
+}
+
+#keypad {
+    /* flex: 4; */
+}
