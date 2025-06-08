@@ -33,4 +33,9 @@ body {
 
 .row {
     flex: 1;
+    display: flex;
+}
+
+.key {
+    flex: 1;
 }
