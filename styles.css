@@ -49,5 +49,21 @@ body {
 
 .key {
     flex: 1;
+    color: white;
     border-radius: 50%;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.number {
+    background-color: rgb(85, 118, 119);
+}
+
+.operator,
+#equal {
+    background-color: rgb(3, 47, 3);
+}
+
+#all-clear {
+    background-color: chocolate;
 }
