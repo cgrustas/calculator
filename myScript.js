@@ -22,21 +22,23 @@ function divide(x, y) {
     return x / y;
 }
 
-// function operate(x, operator, y) {
-//     switch (operator) {
-//         case '+':
-//             return add(x, y);
-//             break;
-//         case '-':
-//             return subtract(x, y);
-//             break;
-//         case '*':
-//             return multiply(x, y);
-//             break;
-//         case '/':
-//             return divide(x, y);
-//             break;
-//         default:
-//             alert("ERROR");
-//     }
-// }
+// takes an operator and two numbers
+// returns the result of x [+, -, *, /] y
+function operate(x, operator, y) {
+    switch (operator) {
+        case '+':
+            return add(x, y);
+            break;
+        case '-':
+            return subtract(x, y);
+            break;
+        case '*':
+            return multiply(x, y);
+            break;
+        case '/':
+            return divide(x, y);
+            break;
+        default:
+            alert("ERROR");
+    }
+}
