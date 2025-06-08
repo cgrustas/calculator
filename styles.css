@@ -15,15 +15,15 @@ body {
     height: 500px;
     background-color: rgb(3, 3, 49);
     padding: 20px;
-    /* display: flex;
-    flex-direction: column; */
+    display: flex;
+    flex-direction: column;
 }
 
 #display {
     background-color: rgb(119, 119, 58);
-    /* flex: 1; */
+    flex: 1;
 }
 
 #keypad {
-    /* flex: 4; */
+    flex: 4;
 }
