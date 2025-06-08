@@ -2,26 +2,6 @@ let operand1;
 let operand2;
 let operator;
 
-// adds x and y
-function add(x, y) {
-    return x + y;
-}
-
-// subtracts x and y
-function subtract(x, y) {
-    return x - y;
-}
-
-// multiplies x and y
-function multiply(x, y) {
-    return x * y;
-}
-
-// divides x and y
-function divide(x, y) {
-    return x / y;
-}
-
 // takes an operator and two numbers
 // returns the result of x [+, -, *, /] y
 function operate(x, operator, y) {
@@ -41,4 +21,24 @@ function operate(x, operator, y) {
         default:
             alert("ERROR");
     }
+}
+
+// adds x and y
+function add(x, y) {
+    return x + y;
+}
+
+// subtracts x and y
+function subtract(x, y) {
+    return x - y;
+}
+
+// multiplies x and y
+function multiply(x, y) {
+    return x * y;
+}
+
+// divides x and y
+function divide(x, y) {
+    return x / y;
 }
