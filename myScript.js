@@ -129,6 +129,7 @@ function divide(x, y) {
 
 // EFFECT: clears all existing data
 function clearData() {
+    const display = document.querySelector("#display #content");
     display.textContent = "";
     operand1 = "";
     operator = "";
