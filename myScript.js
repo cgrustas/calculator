@@ -66,22 +66,17 @@ const Calculator = {
         }
     },
 
-    // Handle operator button clicks - performs pending operation if needed and sets new operator
-    // Enables chain calculations by evaluating previous operation before setting new one
+    // Handle operator button clicks - sets new operator and clears display
+    // For chain calculations: shows result from previous operation and sets new operator
     handleOperatorClick(operator) {
         if (this.state.operand1) {
             if (this.state.operator === "=") { // if we just completed a calculation
                 this.state.operator = operator;
                 this.updateDisplay("");
-            } else if (this.state.operand2) {
-                const result = this.operate(
-                    Number(this.state.operand1), 
-                    this.state.operator, 
-                    Number(this.state.operand2));
-                this.updateDisplay(result);
-                this.state.operand1 = result.toString();
+            } 
+            else if (this.state.operand2) {
+                this.evaluate(); 
                 this.state.operator = operator;
-                this.state.operand2 = "";
             } else {
                 this.updateDisplay("");
                 this.state.operator = operator;
@@ -89,8 +84,8 @@ const Calculator = {
         }
     },
 
-    // Evaluate the current operation when equals is pressed
-    // Updates display with result and prepares state for potential chain operations
+    // Calculate and display the result of the current operation
+    // Reset calculator state variables
     evaluate() {
         if (this.state.operand1 && this.state.operator && this.state.operand2) {
             const result = this.operate(
@@ -105,7 +100,7 @@ const Calculator = {
         }
     },
     
-    // returns the result of [operator] y
+    // Returns the result of [operator] y
     operate(x, operator, y) {
         switch (operator) {
             case '+':
@@ -122,22 +117,22 @@ const Calculator = {
         }
     },
 
-    // adds x and y and returns the sum
+    // Add x and y and returns the sum
     add(x, y) {
         return x + y;
     },
     
-    // subtracts x and y and returns the difference
+    // Subtract x and y and returns the difference
     subtract(x, y) {
         return x - y;
     },
     
-    // multiplies x and y and returns the product
+    // Multiply x and y and returns the product
     multiply(x, y) {
         return x * y;
     },
 
-    // divides x and y and returns the quotient
+    // Divide x and y and returns the quotient
     divide(x, y) {
         if (y == 0) {
             return "ERROR";
