@@ -6,6 +6,7 @@ let displayContainsResult = false;
 displayDigitsOnClick();
 handleOperatorClick();
 evaluateOnClick();
+clearOnClick();
 
 // EFFECT: populates display when digit buttons are clicked
 // stores display number in variable
@@ -56,6 +57,18 @@ function handleOperatorClick() {
                 }
             }
         });
+    });
+}
+
+// EFFECT: clears all existing data on AC click
+function clearOnClick() {
+    const allClear = document.querySelector("#all-clear");
+    allClear.addEventListener("click", () => {
+        display.textContent = "";
+        operand1 = "";
+        operator = "";
+        operand2 = "";
+        displayContainsResult = "";
     });
 }
 
