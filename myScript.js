@@ -121,10 +121,10 @@ function multiply(x, y) {
 // divides x and y
 function divide(x, y) {
     if (y == 0) {
-        alert("You cannot divide with zero!");
-        clearData();
+        return "ERROR";
     }
-    return (x / y).toFixed(4);
+    const result = x / y;
+    return result % 1 === 0 ? result : result.toPrecision(4);
 }
 
 // EFFECT: clears all existing data
