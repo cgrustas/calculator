@@ -78,22 +78,24 @@ function evaluateOnClick() {
 // takes an operator and two numbers
 // returns the result of x [+, -, *, /] y
 function operate(x, operator, y) {
+    let answer;
     switch (operator) {
         case '+':
-            return add(x, y);
+            answer = add(x, y);
             break;
         case '-':
-            return subtract(x, y);
+            answer = subtract(x, y);
             break;
         case '*':
-            return multiply(x, y);
+            answer = multiply(x, y);
             break;
         case '/':
-            return divide(x, y);
+            answer = divide(x, y);
             break;
         default:
             alert("ERROR");
     }
+    return answer.toFixed(4);
 }
 
 // adds x and y
