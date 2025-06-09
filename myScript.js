@@ -63,13 +63,7 @@ function handleOperatorClick() {
 // EFFECT: clears all existing data on AC click
 function clearOnClick() {
     const allClear = document.querySelector("#all-clear");
-    allClear.addEventListener("click", () => {
-        display.textContent = "";
-        operand1 = "";
-        operator = "";
-        operand2 = "";
-        displayContainsResult = "";
-    });
+    allClear.addEventListener("click", clearData);
 }
 
 // EFFECT: updates display to the result of the operation.
@@ -91,24 +85,22 @@ function evaluateOnClick() {
 // takes an operator and two numbers
 // returns the result of x [+, -, *, /] y
 function operate(x, operator, y) {
-    let answer;
     switch (operator) {
         case '+':
-            answer = add(x, y);
+            return add(x, y);
             break;
         case '-':
-            answer = subtract(x, y);
+            return subtract(x, y);
             break;
         case '*':
-            answer = multiply(x, y);
+            return multiply(x, y);
             break;
         case '/':
-            answer = divide(x, y);
+            return divide(x, y);
             break;
         default:
             alert("ERROR");
     }
-    return answer.toFixed(4);
 }
 
 // adds x and y
@@ -127,7 +119,19 @@ function multiply(x, y) {
 }
 
 // divides x and y
-// TODO: raise alert when you divide by zero
 function divide(x, y) {
-    return x / y;
+    if (y == 0) {
+        alert("You cannot divide with zero!");
+        clearData();
+    }
+    return (x / y).toFixed(4);
+}
+
+// EFFECT: clears all existing data
+function clearData() {
+    display.textContent = "";
+    operand1 = "";
+    operator = "";
+    operand2 = "";
+    displayContainsResult = "";
 }
