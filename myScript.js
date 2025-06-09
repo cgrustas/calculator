@@ -1,138 +1,164 @@
-let operand1 = "";
-let operand2 = "";
-let operator = "";
-let displayContainsResult = false;
+// To represent a calculator on a web page
+const Calculator = {
+    state: {
+        operand1: "",
+        operator: "",
+        operand2: "",
+        displayContainsResult: false
+    },
 
-displayDigitsOnClick();
-handleOperatorClick();
-evaluateOnClick();
-clearOnClick();
+    init() {
+        this.display = document.querySelector("#display #content");
+        this.attachEventListeners();
+    },
 
-// EFFECT: populates display when digit buttons are clicked
-// stores display number in variable
-// When a result is displayed, pressing a new digit should clear the result and start a new calculation
-function displayDigitsOnClick() {
-    const digits = document.querySelectorAll(".number");
-    const display = document.querySelector("#display #content");
-    console.log(display);
-    digits.forEach(digit => {
-        digit.addEventListener("click", () => {
-            if (!operator) {
-                if (displayContainsResult) {
-                    operand1 = digit.textContent;
-                    displayContainsResult = false;
-                }
-                else {
-                    operand1 += digit.textContent;
-                }
-                display.textContent = operand1;
-            }
-            else {
-                operand2 += digit.textContent;
-                display.textContent = operand2;
-            }
+    // Attach all event listeners to calculator buttons
+    attachEventListeners() {
+        this.attachDigitListeners();
+        this.attachOperatorListeners();
+        this.attachEqualsListener();
+        this.attachClearListener();
+    },
+
+    // Set up click event listeners for all number buttons (0-9)
+    attachDigitListeners() {
+        const digits = document.querySelectorAll(".number");
+        digits.forEach(digit => {
+            digit.addEventListener("click", () => this.handleDigitClick(digit.textContent));
         });
-    });
-}
+    },
 
-// occurs when an operator button is clicked
-// EFFECT: updates display with the result of the operation and updates operation values
-function handleOperatorClick() {
-    const operators = document.querySelectorAll(".operator");
-    const display = document.querySelector("#display #content")
-    operators.forEach(operButton => {
-        operButton.addEventListener("click", () => {
-            // if you click on an operator before any numbers are in the display, don't do anything
-            if (operand1) {
-                if (operand2) {
-                    display.textContent = operate(Number(operand1), operator, Number(operand2));
-                    operand1 = display.textContent;
-                    operator = operButton.textContent; // should be null if it's equal
-                    operand2 = "";
-                }
-                else {
-                    displayContainsResult = false;
-                    display.textContent = ""; 
-                    operator = operButton.textContent;
-                }
-            }
+    // Set up click event listeners for all basic operator buttons (+, -, *, /)
+    attachOperatorListeners() {
+        const operators = document.querySelectorAll(".operator");
+        operators.forEach(operator => {
+            operator.addEventListener("click", () => 
+                this.handleOperatorClick(operator.textContent));
         });
-    });
-}
+    },
 
-// EFFECT: clears all existing data on AC click
-function clearOnClick() {
-    const allClear = document.querySelector("#all-clear");
-    allClear.addEventListener("click", clearData);
-}
+    // Set up click event listener for the equals button
+    attachEqualsListener() {
+        const equals = document.querySelector("#equal");
+        equals.addEventListener("click", () => this.evaluate());
+    },
 
-// EFFECT: updates display to the result of the operation.
-// stores result in operand1 for chain operations, and clears operator and operand2
-function evaluateOnClick() {
-    const equals = document.querySelector("#equal");
-    const display = document.querySelector("#display #content");
-    equals.addEventListener("click", () => {
-        if (operand1 && operator && operand2) {
-            display.textContent = operate(Number(operand1), operator, Number(operand2));
-            operand1 = display.textContent;
-            operator = "";
-            operand2 = "";
-            displayContainsResult = true;
+    // Set up click event listener for the all clear (AC) button
+    attachClearListener() {
+        const allClear = document.querySelector("#all-clear");
+        allClear.addEventListener("click", () => this.clearData());
+    },
+
+    // Handle digit button clicks - appends digit to current operand and updates display
+    // When a result is displayed, pressing a new digit starts a new calculation
+    handleDigitClick(digit) {
+        if (!this.state.operator) {
+            if (this.state.displayContainsResult) {
+                this.state.operand1 = digit;
+                this.state.displayContainsResult = false;
+            } else {
+                this.state.operand1 += digit;
+            }
+            this.updateDisplay(this.state.operand1);
+        } else {
+            this.state.operand2 += digit;
+            this.updateDisplay(this.state.operand2);
         }
-    });
-}
+    },
 
-// takes an operator and two numbers
-// returns the result of x [+, -, *, /] y
-function operate(x, operator, y) {
-    switch (operator) {
-        case '+':
-            return add(x, y);
-            break;
-        case '-':
-            return subtract(x, y);
-            break;
-        case '*':
-            return multiply(x, y);
-            break;
-        case '/':
-            return divide(x, y);
-            break;
-        default:
-            alert("ERROR");
+    // Handle operator button clicks - performs pending operation if needed and sets new operator
+    // Enables chain calculations by evaluating previous operation before setting new one
+    handleOperatorClick(operatorSymbol) {
+        if (this.state.operand1) {
+            if (this.state.operand2) {
+                // TODO: should this section be delegated? 
+                const result = this.operate(
+                    Number(this.state.operand1), 
+                    this.state.operator, 
+                    Number(this.state.operand2));
+                this.updateDisplay(result);
+                this.state.operand1 = result.toString();
+                this.state.operator = operatorSymbol;
+                this.state.operand2 = "";
+            } else {
+                this.state.displayContainsResult = false;
+                this.updateDisplay("");
+                this.state.operator = operatorSymbol;
+            }
+        }
+    },
+
+    // Evaluate the current operation when equals is pressed
+    // Updates display with result and prepares state for potential chain operations
+    evaluate() {
+        if (this.state.operand1 && this.state.operator && this.state.operand2) {
+            const result = this.operate(
+                Number(this.state.operand1), 
+                this.state.operator, 
+                Number(this.state.operand2)
+            );
+            this.updateDisplay(result);
+            this.state.operand1 = result.toString();
+            this.state.operator = "";
+            this.state.operand2 = "";
+            this.state.displayContainsResult = true;
+        }
+    },
+    
+    // returns the result of [operator] y
+    operate(x, operator, y) {
+        switch (operator) {
+            case '+':
+                return this.add(x, y);
+            case '-':
+                return this.subtract(x, y);
+            case '*':
+                return this.multiply(x, y);
+            case '/':
+                return this.divide(x, y);
+            default:
+                alert("ERROR");
+                return 0;
+        }
+    },
+
+    // adds x and y and returns the sum
+    add(x, y) {
+        return x + y;
+    },
+    
+    // subtracts x and y and returns the difference
+    subtract(x, y) {
+        return x - y;
+    },
+    
+    // multiplies x and y and returns the product
+    multiply(x, y) {
+        return x * y;
+    },
+
+    // divides x and y and returns the quotient
+    divide(x, y) {
+        if (y == 0) {
+            return "ERROR";
+        }
+        const result = x / y;
+        return result % 1 === 0 ? result : result.toPrecision(4);
+    },
+
+    // Reset all calculator state to initial values and clear the display
+    clearData() {
+        this.updateDisplay("");
+        this.state.operand1 = "";
+        this.state.operator = "";
+        this.state.operand2 = "";
+        this.state.displayContainsResult = false;
+    },
+    
+     // Update the calculator display with the provided value
+    updateDisplay(value) {
+        this.display.textContent = value;
     }
 }
 
-// adds x and y
-function add(x, y) {
-    return x + y;
-}
-
-// subtracts x and y
-function subtract(x, y) {
-    return x - y;
-}
-
-// multiplies x and y
-function multiply(x, y) {
-    return x * y;
-}
-
-// divides x and y
-function divide(x, y) {
-    if (y == 0) {
-        return "ERROR";
-    }
-    const result = x / y;
-    return result % 1 === 0 ? result : result.toPrecision(4);
-}
-
-// EFFECT: clears all existing data
-function clearData() {
-    const display = document.querySelector("#display #content");
-    display.textContent = "";
-    operand1 = "";
-    operator = "";
-    operand2 = "";
-    displayContainsResult = "";
-}
+document.addEventListener('DOMContentLoaded', () => Calculator.init());
