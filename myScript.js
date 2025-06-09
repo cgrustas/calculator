@@ -100,7 +100,7 @@ const Calculator = {
         }
     },
     
-    // Returns the result of [operator] y
+    // Return the result of [operator] y
     operate(x, operator, y) {
         switch (operator) {
             case '+':
