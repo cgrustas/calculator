@@ -1,70 +1,79 @@
-let operand1;
-let operand2;
-let operator;
+let operand1 = "";
+let operand2 = "";
+let operator = "";
+let displayContainsResult = false;
 
 displayDigitsOnClick();
+handleOperatorClick();
+evaluateOnClick();
 
 // EFFECT: populates display when digit buttons are clicked
 // stores display number in variable
+// When a result is displayed, pressing a new digit should clear the result and start a new calculation
 function displayDigitsOnClick() {
     const digits = document.querySelectorAll(".number");
     const display = document.querySelector("#display #content");
     console.log(display);
     digits.forEach(digit => {
         digit.addEventListener("click", () => {
-            display.textContent += digit.textContent;
             if (!operator) {
-                operand1 = display.textContent;
+                if (displayContainsResult) {
+                    operand1 = digit.textContent;
+                    displayContainsResult = false;
+                }
+                else {
+                    operand1 += digit.textContent;
+                }
+                display.textContent = operand1;
             }
             else {
-                operand2 = display.textContent;
+                operand2 += digit.textContent;
+                display.textContent = operand2;
             }
         });
     });
 }
 
-/* 
- * I'm thinking that on an operator click, we should store the display text content in the 
- * operand1 variable. If the operand1 variable already has a content, it should go in the operand2
- * variable, and operate should immediately be called, and the result should be stored in the 
- * display.textContent. 
- * 
- * TODO: is there different logic for the equal operator? 
- * 
- * 
- * when + is clicked: 
- *  if operand1 is empty 
-*/
+// occurs when an operator button is clicked
+// EFFECT: updates display with the result of the operation and updates operation values
+function handleOperatorClick() {
+    const operators = document.querySelectorAll(".operator");
+    const display = document.querySelector("#display #content")
+    operators.forEach(operButton => {
+        operButton.addEventListener("click", () => {
+            // if you click on an operator before any numbers are in the display, don't do anything
+            if (operand1) {
+                if (operand2) {
+                    display.textContent = operate(Number(operand1), operator, Number(operand2));
+                    operand1 = display.textContent;
+                    operator = operButton.textContent; // should be null if it's equal
+                    operand2 = "";
+                }
+                else {
+                    displayContainsResult = false;
+                    display.textContent = ""; 
+                    operator = operButton.textContent;
+                }
+            }
+        });
+    });
+}
 
-// EFFECT: 
-// function handleOperatorClick() {
-//     const operators = document.querySelectorAll(".operator");
-//     const display = document.querySelector("#display #content")
-//     operators.forEach(operButton => {
-//         operButton.addEventListener("click", () => {
-//             // if you click on an operator before any numbers are in the display, don't do anything
-//             if (!operand1) {
-//                 return;
-//             }
-//             else {
-//                 if (!operand2) {
-//                     display.textContent = "";
-//                     operator = operator.textContent;
-//                 }
-//             }
-
-
-
-//             if (operand1) { // TODO: does this check if an operator has a value? 
-//                 operand2 = Number(display.textContent);
-//                 display.textContent = operate(operand1, operator, operand2);
-//             }
-//             else {
-//                 operand1 = Number(display.textContent);
-//             }
-//         })
-//     })
-// }
+// EFFECT: updates display to the result of the operation.
+// stores result in operand1 for chain operations, and clears operator and operand2
+function evaluateOnClick() {
+    const equals = document.querySelector("#equal");
+    const display = document.querySelector("#display #content");
+    equals.addEventListener("click", () => {
+        if (operand1 && operator && operand2) {
+            display.textContent = operate(Number(operand1), operator, Number(operand2));
+            operand1 = display.textContent;
+            operator = "";
+            operand2 = "";
+            displayContainsResult = true;
+        }
+    });
+}
 
 // takes an operator and two numbers
 // returns the result of x [+, -, *, /] y
@@ -103,6 +112,7 @@ function multiply(x, y) {
 }
 
 // divides x and y
+// TODO: raise alert when you divide by zero
 function divide(x, y) {
     return x / y;
 }
